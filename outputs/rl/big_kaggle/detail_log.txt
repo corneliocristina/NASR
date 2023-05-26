@@ -1,0 +1,2 @@
+{"epoch": 0, "train": 0, "avr_train_loss": -287.28289794921875, "avr_train_reward": 9.9429012345679}
+{"epoch": 0, "train": 10, "avr_train_loss": -358.0256042480469, "avr_train_reward": 9.790061728395063}
