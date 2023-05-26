@@ -5,6 +5,8 @@ This repository contains the code for the paper ``Learning Where and When to Rea
 <img src="mix/SISTEMA_H.png">
 </p>
 
+The code is also here: https://github.com/SamsungLabs/NASR
+
 ## Code for Visual Sudoku
 
 Take a look at the [Code & Data README](src/README.md) for Installation and How-to-run instructions.
