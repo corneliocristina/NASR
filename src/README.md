@@ -38,16 +38,16 @@ Additional Notes:
 
  | Type | Module | Script |
   | --- | --- | --- |
- | Train  | Perception | `python src/train_perception.py --batch-size 128 --epochs 100 --lr 1.0 --data satnet --gpu-id 0` |
- | Eval  | Perception  | `python src/eval_perception.py --batch-size 128 --data satnet  --gpu-id 0` |
- | Train  | Neuro-Solver | `python src/train_transformer_models.py --module solvernn --data satnet --epochs 200 --warmup 10 --batch-size 128 --lr 0.0001 --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0` |
- | Eval  | Neuro-Solver | `python src/eval_transformer_models.py --module solvernn --data satnet --gpu-id 0` |
- | Train  | Mask-Predictor | `python src/train_transformer_models.py --module mask --data satnet --pos-weights 0.01 --epochs 200 --warmup 10 --batch-size 128 --lr 0.0001 --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0` |
-| Eval | Mask-Predictor | `python src/eval_transformer_models.py --module mask --pos-weights 0.01 --data satnet --gpu-id 0`|
-|  Eval | NASR without RL| `python src/rl_eval_sudoku.py --nasr pretrained --solver prolog --data satnet --gpu-id 0`|
-| Train | NASR with RL | `python src/rl_train_sudoku.py --nasr rl --solver prolog --data satnet --epochs 200 --warmup 10 --batch-size 256 --lr 0.00001  --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0`|
-| Train | Fine-tune only Mask-Predictor with RL | `python src/rl_train_sudoku.py --nasr rl --train-only-mask --solver prolog --data satnet --epochs 200 --warmup 10 --batch-size 256 --lr 0.00001  --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0`|
-| Eval | NASR with RL  |`python src/rl_eval_sudoku.py --nasr rl --solver prolog --data satnet --gpu-id 0` |
+ | Train  | Perception | `python src/train_perception.py --batch-size 128 --epochs 100 --lr 1.0 --data big_kaggle --gpu-id 0` |
+ | Eval  | Perception  | `python src/eval_perception.py --batch-size 128 --data big_kaggle  --gpu-id 0` |
+ | Train  | Neuro-Solver | `python src/train_transformer_models.py --module solvernn --data big_kaggle --epochs 200 --warmup 10 --batch-size 128 --lr 0.0001 --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0` |
+ | Eval  | Neuro-Solver | `python src/eval_transformer_models.py --module solvernn --data big_kaggle --gpu-id 0` |
+ | Train  | Mask-Predictor | `python src/train_transformer_models.py --module mask --data big_kaggle --pos-weights 0.01 --epochs 200 --warmup 10 --batch-size 128 --lr 0.0001 --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0` |
+| Eval | Mask-Predictor | `python src/eval_transformer_models.py --module mask --pos-weights 0.01 --data big_kaggle --gpu-id 0`|
+|  Eval | NASR without RL| `python src/rl_eval_sudoku.py --nasr pretrained --solver prolog --data big_kaggle --gpu-id 0`|
+| Train | NASR with RL | `python src/rl_train_sudoku.py --nasr rl --solver prolog --data big_kaggle --epochs 200 --warmup 10 --batch-size 256 --lr 0.00001  --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0`|
+| Train | Fine-tune only Mask-Predictor with RL | `python src/rl_train_sudoku.py --nasr rl --train-only-mask --solver prolog --data big_kaggle --epochs 200 --warmup 10 --batch-size 256 --lr 0.00001  --weight-decay 3e-1 --clip-grad-norm 1 --gpu-id 0`|
+| Eval | NASR with RL  |`python src/rl_eval_sudoku.py --nasr rl --solver prolog --data big_kaggle --gpu-id 0` |
 
 To use other dataset use the same as above but substituting `big_kaggle` with the choosen dataset name.
 The datasets available are: [`big_kaggle`, `minimal_17`, `multiple_sol`, `satnet`].
