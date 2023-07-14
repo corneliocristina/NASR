@@ -14,11 +14,13 @@ Take a look at the [Code & Data README](src/README.md) for Installation and How-
 <img width=250 src="mix/sudoku.gif">
 </p>
 
-## Paper
+## Paper & slides
 
 The paper can be found here: [ICLR publication](https://openreview.net/forum?id=en9V5F8PR-)
 
-The ICLR poster can be found here: [poster ICLR](mix/Poster%20ICLR.pdf)
+NeSy presentation slides can be found here: [slides](mix/NeSy_no_animations.pdf)
+
+ICLR poster can be found here: [poster ICLR](mix/Poster%20ICLR.pdf)
 
 ### How to cite:
 
