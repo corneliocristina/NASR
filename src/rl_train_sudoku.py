@@ -19,7 +19,10 @@ from torch.distributions import Categorical
 from torch.distributions.bernoulli import Bernoulli
 import torch.nn.functional as F
 from models.transformer_sudoku import get_model
-from pyswip import Prolog
+try:
+    from pyswip import Prolog
+except Exception:
+    print('-->> Prolog not installed')
 SOLVER_TIME_OUT = 0.5
 
 def init_parser():
