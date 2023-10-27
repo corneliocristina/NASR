@@ -8,6 +8,14 @@ from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm
 
+try:
+    from sudoku_solver.sudoku_pl import solve_sudoku
+except Exception:
+    print('-->> Prolog not installed')
+    
+
+
+
 data_path = 'data/'
 
 def get_number_img(num,labels= mnist.test_labels(),images=mnist.test_images()):
@@ -140,7 +148,6 @@ class Board:
         if self.input_is_valid() == False:
             return False
         if solver == 'prolog':
-            from sudoku_solver.sudoku_pl import solve_sudoku
             if prolog_instance:
                 solution = solve_sudoku(self.board, prolog_instance)
             else:
