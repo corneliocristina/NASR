@@ -423,11 +423,11 @@ def process_multiple_sol(min_noise=0,max_noise=100):
     data_new_name = 'multiple_sol'
     min_noise=0
     max_noise=10
-    # if not isdir('data/' + data_new_name):
-    #     os.mkdir('data/' + data_new_name)
-    # format_conversion(data_name,data_new_name)
+    if not isdir('data/' + data_new_name):
+        os.mkdir('data/' + data_new_name)
+    format_conversion(data_name,data_new_name)
     solver = 'backtrack'
-    # dataset_generation(data_new_name,solver)
+    dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=10,noise_input=True)
     train_val_test_split(data_new_name)
 
