@@ -16,7 +16,11 @@ import multiprocessing as mp
 from joblib import Parallel, delayed
 import argparse
 
-
+try:
+    from pyswip import Prolog
+except Exception:
+    print('-->> Prolog not installed')
+    
 def init_parser():
     parser = argparse.ArgumentParser(description='Solver-NN and Mask-Predictor Module for NASR')
     # General args
@@ -403,9 +407,7 @@ def process_big_kaggle(args):
     assert args.solver in ['default','prolog','backtrack'] , 'choose a solver in [default, prolog, backtrack]'
     solver = args.solver
     if args.solver== 'default':
-        solver = 'backtrack'
-    if solver == 'prolog':
-        from pyswip import Prolog
+        solver = 'backtrack'        
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=1,noise_input=True)
     train_val_test_split(data_new_name)
@@ -431,8 +433,7 @@ def process_minimal_17(args):
     solver = args.solver
     if args.solver== 'default':
         solver = 'prolog'
-    if solver == 'prolog':
-        from pyswip import Prolog
+
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=1,noise_input=True)
     train_val_test_split(data_new_name)
@@ -457,8 +458,7 @@ def process_multiple_sol(args):
     solver = args.solver
     if args.solver== 'default':
         solver = 'backtrack'
-    if solver == 'prolog':
-        from pyswip import Prolog
+
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=10,noise_input=True)
     train_val_test_split(data_new_name)
