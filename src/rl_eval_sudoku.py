@@ -12,7 +12,10 @@ from datasets import SudokuDataset_RL
 import random
 from rl_train_sudoku import compute_reward
 from sudoku_solver.board import Board
-from pyswip import Prolog
+try:
+    from pyswip import Prolog
+except Exception:
+    print('-->> Prolog not installed')
 from torch.distributions.bernoulli import Bernoulli
 from sudoku_solver.board import check_input_board,check_consistency_board
 from models.perception import SequentialPerception
