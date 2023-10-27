@@ -26,8 +26,8 @@ def init_parser():
                         help='min amount of noise in the data generation')
     parser.add_argument('--max_noise', type=int, default=None,
                         help='max amount of noise in the data generation')
-    
-    return parser
+    parser.add_argument('--max_noise', type=int, default='all',
+                        help='dataset to generate between [multiple_sol,minimal_17,big_kaggle,satnet_data,all]')
 
 
 
@@ -560,13 +560,23 @@ def statistics_satnet():
 def main_data_gen():
     parser = init_parser()
     args = parser.parse_args()
-
-    process_multiple_sol(args) # multiple_sol
-    process_minimal_17(args) # minimal_17
-    process_big_kaggle(args) # big_kaggle
-    process_satnet_data(args) # satnet_data
-
     
+    if args.dataset == 'multiple_sol':
+        process_multiple_sol(args) # multiple_sol
+    elif args.dataset == 'minimal_17':
+        process_minimal_17(args) # minimal_17
+    elif args.dataset == 'big_kaggle':
+        process_big_kaggle(args) # big_kaggle
+    elif args.dataset == 'satnet_data':
+        process_satnet_data(args) # satnet_data
+    else:
+        print(' Generating all datasets...')
+        process_multiple_sol(args) # multiple_sol
+        process_minimal_17(args) # minimal_17
+        process_big_kaggle(args) # big_kaggle
+        process_satnet_data(args) # satnet_data
+
+        
     
 
 
