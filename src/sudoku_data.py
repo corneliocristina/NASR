@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import mnist
 import os
 from tqdm import tqdm
-from pyswip import Prolog
 from sudoku_solver.board import Board
 import torch
 import h5py
@@ -23,12 +22,16 @@ def init_parser():
     # General args
     parser.add_argument('--solver', type=str, default='default',
                         help='symbolic solver to use. available options are default, prolog and backtrack')
+    parser.add_argument('--min_noise', type=int, default=None,
+                        help='min amount of noise in the data generation')
+    parser.add_argument('--max_noise', type=int, default=None,
+                        help='max amount of noise in the data generation')
     
     return parser
 
 
 
-def process_satnet_data(noise_input=False):
+def process_satnet_data(args, noise_input=False):
     print('----------------------------------------------')
     print('Processing dataset satnet')
     print('----------------------------------------------')
@@ -37,6 +40,9 @@ def process_satnet_data(noise_input=False):
     data_name = 'satnet'
     min_noise=0
     max_noise=20
+    if args.min_noise and args.max_noise and args.min_noise < args.max_noise:
+        min_noise=args.min_noise
+        max_noise=args.max_noise
 
     if not isdir('data/'+data_name):
         os.mkdir('data/'+data_name)
@@ -176,7 +182,7 @@ def images_generation(data_name,flag):
         pass
     os.mkdir(data_out_imgs_path)
     boards_dict = np.load(data_in,allow_pickle=True).item()
-    num_cores =  1 # change to mp.cpu_count() or custom number for faster generation
+    num_cores =  mp.cpu_count() # change to mp.cpu_count() or custom number for faster generation
     Parallel(n_jobs = num_cores)(delayed(images_generation_core)(data_out_imgs_path,boards_dict[key],key,labels,images) for key in tqdm(boards_dict))
 
 
@@ -378,7 +384,7 @@ def train_val_test_split(data_name):
     shutil.rmtree(f'data/{data_name}/images/')
 
 
-def process_big_kaggle():
+def process_big_kaggle(args):
     print('----------------------------------------------')
     print('Processing dataset big_kaggle (puzzles0_kaggle)')
     print('----------------------------------------------')
@@ -387,16 +393,24 @@ def process_big_kaggle():
     data_new_name = 'big_kaggle'
     min_noise=0
     max_noise=10
+    if args.min_noise and args.max_noise and args.min_noise < args.max_noise:
+        min_noise=args.min_noise
+        max_noise=args.max_noise
     if not isdir('data/' + data_new_name):
         os.mkdir('data/' + data_new_name)
     format_conversion(data_name,data_new_name)
-    solver = 'backtrack'
+    assert args.solver in ['default','prolog','backtrack'] , 'choose a solver in [default, prolog, backtrack]'
+    solver = args.solver
+    if args.solver== 'default':
+        solver = 'backtrack'
+    if solver == 'prolog':
+        from pyswip import Prolog
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=1,noise_input=True)
     train_val_test_split(data_new_name)
     
 
-def process_minimal_17(min_noise=0,max_noise=100):
+def process_minimal_17(args):
     print('----------------------------------------------')
     print('Processing dataset minimal_17 (puzzles2_17_clue)')
     print('----------------------------------------------')
@@ -405,16 +419,25 @@ def process_minimal_17(min_noise=0,max_noise=100):
     data_new_name = "minimal_17"
     min_noise=20
     max_noise=40
+    if args.min_noise and args.max_noise and args.min_noise < args.max_noise:
+        min_noise=args.min_noise
+        max_noise=args.max_noise
+
     if not isdir('data/' + data_new_name):
         os.mkdir('data/' + data_new_name)
     format_conversion(data_name,data_new_name)
-    solver = 'prolog'
+    assert args.solver in ['default','prolog','backtrack'] , 'choose a solver in [default, prolog, backtrack]'
+    solver = args.solver
+    if args.solver== 'default':
+        solver = 'prolog'
+    if solver == 'prolog':
+        from pyswip import Prolog
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=1,noise_input=True)
     train_val_test_split(data_new_name)
 
 
-def process_multiple_sol(min_noise=0,max_noise=100):
+def process_multiple_sol(args):
     print('----------------------------------------------')
     print('Processing dataset multiple_sol (puzzles7_serg_benchmark)')
     print('----------------------------------------------')
@@ -423,10 +446,18 @@ def process_multiple_sol(min_noise=0,max_noise=100):
     data_new_name = 'multiple_sol'
     min_noise=0
     max_noise=10
+    if args.min_noise and args.max_noise and args.min_noise < args.max_noise:
+        min_noise=args.min_noise
+        max_noise=args.max_noise
     if not isdir('data/' + data_new_name):
         os.mkdir('data/' + data_new_name)
     format_conversion(data_name,data_new_name)
-    solver = 'backtrack'
+    assert args.solver in ['default','prolog','backtrack'] , 'choose a solver in [default, prolog, backtrack]'
+    solver = args.solver
+    if args.solver== 'default':
+        solver = 'backtrack'
+    if solver == 'prolog':
+        from pyswip import Prolog
     dataset_generation(data_new_name,solver)
     mask_data_generation(data_new_name,min_noise,max_noise,factor_num=10,noise_input=True)
     train_val_test_split(data_new_name)
@@ -526,15 +557,26 @@ def statistics_satnet():
     print(f'Size: {len(data_s)}')
 
 
+def main_data_gen():
+    parser = init_parser()
+    args = parser.parse_args()
+
+    process_multiple_sol(args) # multiple_sol
+    process_minimal_17(args) # minimal_17
+    process_big_kaggle(args) # big_kaggle
+    process_satnet_data(args) # satnet_data
+
+    
+    
+
+
+
 if __name__=='__main__':
     random.seed(42)
     np.random.seed(42)
     torch.manual_seed(42)
-
-    process_multiple_sol() # multiple_sol
-    process_minimal_17() # minimal_17
-    process_big_kaggle() # big_kaggle
-    process_satnet_data() # satnet_data
+    
+    main_data_gen()
 
     # uncomment the following line for a dataset loading test 
     # test_load('puzzles0_kaggle',42)
@@ -544,4 +586,3 @@ if __name__=='__main__':
     # statistics_datasets('puzzles7_serg_benchmark')
     # statistics_datasets('puzzles2_17_clue')
     # statistics_satnet()
-    
