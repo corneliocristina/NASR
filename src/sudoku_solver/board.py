@@ -7,7 +7,6 @@ import mnist
 from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm
-from sudoku_solver.sudoku_pl import solve_sudoku
 
 data_path = 'data/'
 
@@ -141,6 +140,7 @@ class Board:
         if self.input_is_valid() == False:
             return False
         if solver == 'prolog':
+            from sudoku_solver.sudoku_pl import solve_sudoku
             if prolog_instance:
                 solution = solve_sudoku(self.board, prolog_instance)
             else:
